@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Typography } from '@mui/material';
 
 export const GPSContext = React.createContext<any>(null); //create context outside to access from anywhere
 
@@ -18,9 +19,9 @@ export default function ShowCurrentLocation({ children }: {children: JSX.Element
                     {
                         isErrorWithGPS 
                         ? 
-                        <>your navigator does not allow GPS tracking</>
+                        <Typography variant='body1'>Your navigator does not allow GPS tracking</Typography>
                         :
-                        <> {`lat: ${usersCurrentLocation?.coords.latitude}, long: ${usersCurrentLocation?.coords.longitude}`} </>
+                        <Typography variant='body1'> {`Current location: lat: ${usersCurrentLocation?.coords.latitude}, long: ${usersCurrentLocation?.coords.longitude}`} </Typography>
                     }
                     </div>
                 </GPSContext.Provider>

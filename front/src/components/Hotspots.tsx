@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Card, CardContent, CardHeader, Typography, Button, ButtonGroup, Paper } from '@mui/material';
+import { Grid, Card, CardContent, CardHeader, Typography, Button, ButtonGroup, Paper, FormControlLabel, Switch } from '@mui/material';
 import { Container } from '@mui/system';
 import { GET_HOTSPOTS_BY_CITY_QUERY } from '../queries/queries';
 import { useQuery } from '@apollo/client';
@@ -17,7 +17,8 @@ interface hotspot {
 
 export default function Hotspots({ selectedCityId }:{selectedCityId:string}){
     //state
-    const [text, setText] = React.useState<string>('');
+    const [ text, setText ] = React.useState<string>('');
+    const [ isRespectRadiusOff, setIsRespectRadiusOff ] = React.useState<boolean>(false);
     //get context
     const gpsCoordinates = React.useContext(GPSContext);
     const { data, loading, error } = useQuery(GET_HOTSPOTS_BY_CITY_QUERY, {variables: { cityId: '63daa3c0086bf959ab6bb789' }});
@@ -52,6 +53,7 @@ export default function Hotspots({ selectedCityId }:{selectedCityId:string}){
             <Grid container spacing={2} >
                 {data.hotspotsByCity
                     .filter((hotspot: hotspot) => { //is the user in the radius of this hotspot? 
+                        if (isRespectRadiusOff) return true;
                         return (distanceBetweenCoordinates(gpsCoordinates?.coords.latitude, gpsCoordinates?.coords.longitude, hotspot.coordinates.lat, hotspot.coordinates.long) < hotspot.radius)
                     }) 
                     .map((hotspot:hotspot) => { //render JSX
@@ -65,7 +67,14 @@ export default function Hotspots({ selectedCityId }:{selectedCityId:string}){
                     })
                 }
             </Grid>
+            <Typography>Settings</Typography>
             <ButtonGroup>
+                <FormControlLabel 
+                    control={
+                        <Switch 
+                            checked={isRespectRadiusOff} 
+                            onChange={ () => setIsRespectRadiusOff(!isRespectRadiusOff) }/>} 
+                    label="Is Radius Respected" />
                 <Button onClick={ () => pauseDescription() }> Pause </Button>
                 <Button onClick={ () => resumeDescription() }> Resume </Button>
                 <Button onClick={ () => stopDescription() }> Stop </Button>

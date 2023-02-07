@@ -10,6 +10,7 @@ import {    GET_AUTHORS_QUERY,
             GET_HOTSPOTS_BY_CITY_QUERY,
             GET_CITIES_QUERY } from '../queries/queries';
 import { GPSContext } from './ShowCurrentLocation';
+import { ButtonGroup } from '@mui/material';
 
 
 
@@ -23,6 +24,7 @@ export default function AddHotspot():JSX.Element {
     const GPSCoordinates = React.useContext(GPSContext);
 
     //State
+    const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
     const [name, setName] = React.useState<string>('');
     const [authorId, setAuthorId] = React.useState<string>('');
     const [cityId, setCityId] = React.useState<string>('');
@@ -37,6 +39,7 @@ export default function AddHotspot():JSX.Element {
     function submitForm(e:React.FormEvent<HTMLFormElement>):void {
         e.preventDefault();
         mutateFunction({ variables:{ name, authorId, radius, coordinates: { lat, long }, description, cityId }, refetchQueries: [{query: GET_HOTSPOTS_BY_CITY_QUERY, variables: { cityId }}] });
+        setIsModalOpen(false)
         alert('successfully added your hotspot');
     }
     
@@ -44,16 +47,22 @@ export default function AddHotspot():JSX.Element {
         padding: '10px',
         fontStyle: 'courrier new',
     }
-
+    if (!isModalOpen) 
+        return <Button 
+                        style={{position: 'absolute', bottom: '10px', right: '10px' }} 
+                        onClick={()=>{setIsModalOpen(true)}}>
+                            Add Hotspot
+                </Button>
     return (
-        <Container style={{position: 'absolute', bottom: '310px', right: '0', width: '400px', height: '300px', margin: '15px'}} >
+        <Container style= {{ position: 'absolute', bottom: '300px', right: '0', width: '400px', margin: '25px', backgroundColor: 'white', border:'1px lightgrey solid', borderRadius: '10px' }} >
             <Typography variant='h4' align='center' >
                 Add Hotspot
             </Typography>
         <form 
-            id='add-book' 
-            onSubmit={(event) => submitForm(event)} 
-            style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+            id='add-hotspot' 
+            onSubmit={ (event) => submitForm(event)} 
+            style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            
             <div style={fieldStyle}>
                 <TextField 
                     label='Hotspot name:'
@@ -122,7 +131,14 @@ export default function AddHotspot():JSX.Element {
                     <option disabled>loading still</option>}
                 </select>
             </div>
-            <Button variant='contained' type="submit" form="add-book" value="Submit" > Add New Hotspot</Button>
+            <ButtonGroup fullWidth>
+                <Button variant='contained' type="submit" form="add-hotspot" value="Submit" > 
+                    Add New Hotspot
+                </Button>
+                <Button onClick={ () => setIsModalOpen(false) }>
+                    cancel
+                </Button>
+            </ButtonGroup>
         </form>
         </Container>
     )
