@@ -27,8 +27,8 @@ export default function AddHotspot():JSX.Element {
 
     function submitForm(e:React.FormEvent<HTMLFormElement>):void {
         e.preventDefault();
-        console.log(name, authorId, description, cityId, radius);
         mutateFunction({ variables:{ name, authorId, radius, coordinates: { lat, long }, description, cityId }, refetchQueries: [{query: GET_HOTSPOTS_BY_CITY_QUERY, variables: { cityId }}] });
+        alert('successfully added your hotspot');
     }
     
     const fieldStyle = {
@@ -37,7 +37,7 @@ export default function AddHotspot():JSX.Element {
     }
 
     return (
-        <Container style={{position: 'absolute', bottom: '310px', right: '0', width: '400px', height: '300px', margin: '15px'}}>
+        <Container style={{position: 'absolute', bottom: '310px', right: '0', width: '400px', height: '300px', margin: '15px'}} >
             <Typography variant='h4' align='center' >
                 Add Hotspot
             </Typography>

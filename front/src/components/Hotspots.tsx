@@ -6,7 +6,7 @@ import { Container } from '@mui/system';
 import { GET_HOTSPOTS_BY_CITY_QUERY } from '../queries/queries';
 import { useQuery } from '@apollo/client';
 import distanceBetweenCoordinates from '../lib/distanceBetweenCoordinates';
-
+import { GPSContext } from './ShowCurrentLocation';
 
 interface hotspot {
     city: { name: string },
@@ -18,6 +18,8 @@ interface hotspot {
 }
 
 export default function Hotspots({ coords }:any){
+    const gpsCoordinates = React.useContext(GPSContext);
+    console.log(gpsCoordinates);
     const { data, loading, error } = useQuery(GET_HOTSPOTS_BY_CITY_QUERY, {variables: {cityId: '63daa3c0086bf959ab6bb789'}});
     if (loading) return <div>loading</div>;
     if (error) {
@@ -27,9 +29,10 @@ export default function Hotspots({ coords }:any){
     return (
         <Container>
             <Grid container spacing={2} >
+                { gpsCoordinates?.coords.latitude }
                 {data.hotspotsByCity
                     .filter((hotspot: hotspot)=>{ 
-                        return (distanceBetweenCoordinates(43.3028676, 5.3909867, hotspot.coordinates.lat, hotspot.coordinates.long) < hotspot.radius)
+                        return (distanceBetweenCoordinates(gpsCoordinates?.coords.latitude, gpsCoordinates?.coords.longitude, hotspot.coordinates.lat, hotspot.coordinates.long) < hotspot.radius)
                     }) //is the user in the radius of this hotspot? 
                     .map((hotspot:hotspot) => //render JSX
                 {
@@ -60,7 +63,7 @@ function HotspotCard({hotspot}:{hotspot:hotspot}){
                 <CardContent>
                     <Typography variant='body2'> { hotspot.description }</Typography>
                     <Typography variant='body2'> { `Latitude: ${hotspot.coordinates.lat}`}</Typography>
-                    <Typography variant='body2'>{ `Longitude: ${hotspot.coordinates.lat}`}</Typography>
+                    <Typography variant='body2'>{ `Longitude: ${hotspot.coordinates.long}`}</Typography>
                 </CardContent>
                 
             </Card>);
