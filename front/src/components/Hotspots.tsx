@@ -29,21 +29,20 @@ export default function Hotspots({ coords }:any){
     return (
         <Container>
             <Grid container spacing={2} >
-                { gpsCoordinates?.coords.latitude }
                 {data.hotspotsByCity
-                    .filter((hotspot: hotspot)=>{ 
+                    .filter((hotspot: hotspot) => { 
                         return (distanceBetweenCoordinates(gpsCoordinates?.coords.latitude, gpsCoordinates?.coords.longitude, hotspot.coordinates.lat, hotspot.coordinates.long) < hotspot.radius)
                     }) //is the user in the radius of this hotspot? 
-                    .map((hotspot:hotspot) => //render JSX
-                {
-                    return (
-                        <Grid item 
-                            sm={12} md={4} lg={3}
-                            key={hotspot.id} 
-                            gap="2px">
-                            <HotspotCard hotspot={hotspot}></HotspotCard>
-                        </Grid>);
-                })}
+                    .map((hotspot:hotspot) => {//render JSX
+                        return (
+                            <Grid item 
+                                sm={12} md={4} lg={3}
+                                key={hotspot.id} 
+                                gap="2px">
+                                <HotspotCard hotspot={hotspot}></HotspotCard>
+                            </Grid>);
+                    })
+                }
             </Grid>
         </Container>
     )
@@ -65,6 +64,5 @@ function HotspotCard({hotspot}:{hotspot:hotspot}){
                     <Typography variant='body2'> { `Latitude: ${hotspot.coordinates.lat}`}</Typography>
                     <Typography variant='body2'>{ `Longitude: ${hotspot.coordinates.long}`}</Typography>
                 </CardContent>
-                
             </Card>);
 }

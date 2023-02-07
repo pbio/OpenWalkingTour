@@ -9,14 +9,17 @@ import {    GET_AUTHORS_QUERY,
             ADD_HOTSPOT_MUTATION,
             GET_HOTSPOTS_BY_CITY_QUERY,
             GET_CITIES_QUERY } from '../queries/queries';
+import { GPSContext } from './ShowCurrentLocation';
 
 
 
 export default function AddHotspot():JSX.Element {
+    //Queries
     const [ mutateFunction, bookMutation ] = useMutation(ADD_HOTSPOT_MUTATION);
     const authorsQuery = useQuery(GET_AUTHORS_QUERY);
     const citiesQuery = useQuery(GET_CITIES_QUERY);
-    
+
+    //State
     const [name, setName] = React.useState<string>('');
     const [authorId, setAuthorId] = React.useState<string>('');
     const [cityId, setCityId] = React.useState<string>('');
@@ -24,6 +27,10 @@ export default function AddHotspot():JSX.Element {
     const [radius, setRadius] = React.useState<number>(100);
     const [lat, setLat] = React.useState<number>(0);
     const [long, setLong] = React.useState<number>(0);
+
+    //context
+    const GPSCoordinates = React.useContext(GPSContext);
+
 
     function submitForm(e:React.FormEvent<HTMLFormElement>):void {
         e.preventDefault();
@@ -53,40 +60,42 @@ export default function AddHotspot():JSX.Element {
                     onChange={event => setName(event.target.value)} />
             </div>
 
-            <div style={fieldStyle}>
+            <div style={ fieldStyle }>
                 <TextField 
                     label='description'
                     required
                     fullWidth
                     multiline
                     rows={4}
-                    onChange={event => setDescription(event.target.value)} />
+                    onChange={ event => setDescription( event.target.value )} />
             </div>
             <div style={fieldStyle}>
                 <TextField 
                     label='radius'
                     fullWidth
                     type='number'
-                    onChange={event => setRadius(+event.target.value)} />
+                    onChange= { event => setRadius( +event.target.value )} />
             </div>
-            <div style={fieldStyle}>
+            <div style= { fieldStyle } >
                 <TextField 
                     label='latitude'
+                    value= { GPSCoordinates?.coords.latitude }
                     fullWidth
-                    onChange={event => setLat(+event.target.value)} />
+                    onChange= { event => setLat( +event.target.value )} />
             </div>
-            <div style={fieldStyle}>
+            <div style={ fieldStyle }>
                 <TextField 
                     label='longitude'
+                    value= { GPSCoordinates?.coords.longitude }
                     fullWidth
-                    onChange={event => setLong(+event.target.value)} />
+                    onChange= { event => setLong( +event.target.value )} />
             </div>
             <div style={fieldStyle}>
                 <label> Author </label>
                 <select 
-                    onChange={(event)=>setAuthorId(event.target.value)}>
+                    onChange={ (event) => setAuthorId( event.target.value )}>
                     <option>Select Historian</option>
-                    {authorsQuery.data ? 
+                    { authorsQuery.data ? 
                     authorsQuery.data.authors.map((author: {name: string, id: string} ) => {
                         return <option 
                                     key={ author.id } 
@@ -100,7 +109,7 @@ export default function AddHotspot():JSX.Element {
             <div style={fieldStyle}>
                 <label> City </label>
                 <select 
-                    onChange={(event)=>setCityId(event.target.value)}>
+                    onChange={ (event) => setCityId( event.target.value )}>
                     <option>Select City</option>
                     {citiesQuery.data ? 
                     citiesQuery.data.cities.map((city: {name: string, id: string} ) => {
