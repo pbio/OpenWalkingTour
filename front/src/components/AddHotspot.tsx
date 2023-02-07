@@ -19,17 +19,19 @@ export default function AddHotspot():JSX.Element {
     const authorsQuery = useQuery(GET_AUTHORS_QUERY);
     const citiesQuery = useQuery(GET_CITIES_QUERY);
 
+    //context
+    const GPSCoordinates = React.useContext(GPSContext);
+
     //State
     const [name, setName] = React.useState<string>('');
     const [authorId, setAuthorId] = React.useState<string>('');
     const [cityId, setCityId] = React.useState<string>('');
     const [description, setDescription] = React.useState<string>('');
     const [radius, setRadius] = React.useState<number>(100);
-    const [lat, setLat] = React.useState<number>(0);
-    const [long, setLong] = React.useState<number>(0);
+    const [lat, setLat] = React.useState<number>(GPSCoordinates?.coords.latitude);
+    const [long, setLong] = React.useState<number>(GPSCoordinates?.coords.longitude);
 
-    //context
-    const GPSCoordinates = React.useContext(GPSContext);
+
 
 
     function submitForm(e:React.FormEvent<HTMLFormElement>):void {
@@ -79,14 +81,12 @@ export default function AddHotspot():JSX.Element {
             <div style= { fieldStyle } >
                 <TextField 
                     label='latitude'
-                    value= { GPSCoordinates?.coords.latitude }
                     fullWidth
                     onChange= { event => setLat( +event.target.value )} />
             </div>
             <div style={ fieldStyle }>
                 <TextField 
                     label='longitude'
-                    value= { GPSCoordinates?.coords.longitude }
                     fullWidth
                     onChange= { event => setLong( +event.target.value )} />
             </div>

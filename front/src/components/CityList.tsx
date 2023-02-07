@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
-import { Paper } from '@mui/material';
+import { getStepContentUtilityClass, Paper } from '@mui/material';
 import { Container } from '@mui/system';
 import { GET_CITIES_QUERY } from '../queries/queries';
 import { useQuery } from '@apollo/client';
@@ -11,7 +11,7 @@ interface city {
     id: string
 }
 
-export default function CityList(){
+export default function CityList({setCityId}:{setCityId:any}){
     const { data, loading, error } = useQuery(GET_CITIES_QUERY);
     if (loading) return <div>loading</div>;
     if (error) {
@@ -20,13 +20,13 @@ export default function CityList(){
     }
     return (
         <Container>
-            <Grid container>{data.cities.map((city:city) =>
-                {
+            <Grid container>{data.cities.map((city:city) => {
                     return (
                         <Grid item 
                             xs={4} sm={2} md={1}
                             key={city.id} 
-                            gap="2px">
+                            gap="2px"
+                            onClick={()=>{setCityId(city.id)}}>
                             <Paper>{city.name}</Paper>
                         </Grid>);
                 })}

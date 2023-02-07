@@ -15,6 +15,7 @@ const client: any = new ApolloClient({
 })
 
 export default function App() {
+  const [selectedCityId, setSelectedCityId ] = React.useState('');
 
   return (
     <ApolloProvider client={client} >
@@ -29,8 +30,8 @@ export default function App() {
 
         <ShowCurrentLocation>        
           <AddHotspot />
-          <CityList />
-          <Hotspots />
+          <CityList setCityId={ setSelectedCityId } />
+          { selectedCityId ? <Hotspots selectedCityId={ selectedCityId } /> : <></>}
         </ShowCurrentLocation>
         {/* <Test /> */}
 
