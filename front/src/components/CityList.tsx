@@ -8,6 +8,7 @@ import { useQuery } from '@apollo/client';
 interface city {
     name: string,
     description: string,
+    id: string
 }
 
 export default function CityList(){
@@ -19,7 +20,7 @@ export default function CityList(){
     }
     return (
         <Container>
-            <Grid container>{data.cities.map((city:any) =>
+            <Grid container>{data.cities.map((city:city) =>
                 {
                     return (
                         <Grid item 

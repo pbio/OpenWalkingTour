@@ -5,20 +5,33 @@ import { Paper } from '@mui/material';
 import { Container } from '@mui/system';
 import { GET_HOTSPOTS_BY_CITY_QUERY } from '../queries/queries';
 import { useQuery } from '@apollo/client';
+import distanceBetweenCoordinates from '../lib/distanceBetweenCoordinates';
 
 
-export default function Hotspots(){
+interface hotspot {
+    city: { name: string },
+    coordinates: { lat: number, long: number },
+    radius: number,
+    name: string,
+    description: string,
+    id: string,
+}
+
+export default function Hotspots({ coords }:any){
     const { data, loading, error } = useQuery(GET_HOTSPOTS_BY_CITY_QUERY, {variables: {cityId: '63daa3c0086bf959ab6bb789'}});
     if (loading) return <div>loading</div>;
     if (error) {
         return <div>error</div>
-        console.log(error)
     }
 
     return (
         <Container>
             <Grid container spacing={2} >
-                {data.hotspotsByCity.map((hotspot:any) =>
+                {data.hotspotsByCity
+                    .filter((hotspot: hotspot)=>{ 
+                        return (distanceBetweenCoordinates(43.3028676, 5.3909867, hotspot.coordinates.lat, hotspot.coordinates.long) < hotspot.radius)
+                    }) //is the user in the radius of this hotspot? 
+                    .map((hotspot:hotspot) => //render JSX
                 {
                     return (
                         <Grid item 
@@ -33,12 +46,12 @@ export default function Hotspots(){
     )
 }
 
-function HotspotCard({hotspot}:any){
+function HotspotCard({hotspot}:{hotspot:hotspot}){
     const playText:any = (text: string) => {
         const msg = new SpeechSynthesisUtterance();
         msg.text = text;
         window.speechSynthesis.speak(msg);
-        return true;
+        return;
     }
     return (<Card onClick={()=>playText(hotspot.description)}>
                 <CardHeader 

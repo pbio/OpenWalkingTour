@@ -76,6 +76,7 @@ query GetHotspotsByCity( $cityId: ID! ){
             lat
             long
         }
+        radius
         city{
             name
         }

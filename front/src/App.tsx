@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Hotspots from './components/Hotspots';
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import Test from './components/test';
 
 const client: any = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
@@ -25,10 +26,14 @@ export default function App() {
           gutterBottom>
             Open Walking Tour
         </Typography>
-        <AddHotspot />
-        <CityList />
-        <ShowCurrentLocation />
-        <Hotspots />
+
+        <ShowCurrentLocation>        
+          <AddHotspot />
+          <CityList />
+          <Hotspots />
+        </ShowCurrentLocation>
+        {/* <Test /> */}
+
       </Container>
     </ApolloProvider>
   );

@@ -17,13 +17,13 @@ export default function AddHotspot():JSX.Element {
     const authorsQuery = useQuery(GET_AUTHORS_QUERY);
     const citiesQuery = useQuery(GET_CITIES_QUERY);
     
-    const [name, setName]:[string, Function] = React.useState('');
-    const [authorId, setAuthorId]:[string, Function] = React.useState('');
-    const [cityId, setCityId]:[string, Function] = React.useState('');
-    const [description, setDescription]:[string, Function] = React.useState('');
-    const [radius, setRadius]:[number, Function] = React.useState(100);
-    const [lat, setLat]:[number, Function] = React.useState(0);
-    const [long, setLong]:[number, Function] = React.useState(0);
+    const [name, setName] = React.useState<string>('');
+    const [authorId, setAuthorId] = React.useState<string>('');
+    const [cityId, setCityId] = React.useState<string>('');
+    const [description, setDescription] = React.useState<string>('');
+    const [radius, setRadius] = React.useState<number>(100);
+    const [lat, setLat] = React.useState<number>(0);
+    const [long, setLong] = React.useState<number>(0);
 
     function submitForm(e:React.FormEvent<HTMLFormElement>):void {
         e.preventDefault();
