@@ -33,6 +33,16 @@ export default function AddHotspot():JSX.Element {
     const [lat, setLat] = React.useState<number>(GPSCoordinates?.coords.latitude);
     const [long, setLong] = React.useState<number>(GPSCoordinates?.coords.longitude);
 
+    //useEffect
+    React.useEffect(()=>{
+        setLat(GPSCoordinates?.coords.latitude);
+        setLong(GPSCoordinates?.coords.longitude);
+    },[GPSCoordinates])
+
+    React.useEffect(()=>{
+        console.log(lat)
+    }, [lat])
+
 
 
 
@@ -49,12 +59,12 @@ export default function AddHotspot():JSX.Element {
     }
     if (!isModalOpen) 
         return <Button 
-                        style={{position: 'absolute', bottom: '10px', right: '10px' }} 
+                        style={{position: 'fixed', bottom: '10px', right: '10px' }} 
                         onClick={()=>{setIsModalOpen(true)}}>
                             Add Hotspot
                 </Button>
     return (
-        <Container style= {{ position: 'absolute', bottom: '300px', right: '0', width: '400px', margin: '25px', backgroundColor: 'white', border:'1px lightgrey solid', borderRadius: '10px' }} >
+        <Container style= {{ position: 'fixed', bottom: 0, right: '0', width: '400px', margin: '25px', backgroundColor: 'white', border:'1px lightgrey solid', borderRadius: '10px' }} >
             <Typography variant='h4' align='center' >
                 Add Hotspot
             </Typography>
@@ -91,12 +101,14 @@ export default function AddHotspot():JSX.Element {
                 <TextField 
                     label='latitude'
                     fullWidth
+                    value={lat}
                     onChange= { event => setLat( +event.target.value )} />
             </div>
             <div style={ fieldStyle }>
                 <TextField 
                     label='longitude'
                     fullWidth
+                    value={long}
                     onChange= { event => setLong( +event.target.value )} />
             </div>
             <div style={fieldStyle}>

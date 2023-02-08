@@ -5,6 +5,7 @@ import { GET_HOTSPOTS_BY_CITY_QUERY } from '../queries/queries';
 import { useQuery } from '@apollo/client';
 import distanceBetweenCoordinates from '../lib/distanceBetweenCoordinates';
 import { GPSContext } from './ShowCurrentLocation';
+import Map from './Map';
 
 interface hotspot {
     city: { name: string },
@@ -17,7 +18,8 @@ interface hotspot {
 
 export default function Hotspots({ selectedCityId }:{selectedCityId:string}){
     //state
-    const [ text, setText ] = React.useState<string>('');
+    //const [ text, setText ] = React.useState<string>('');
+    const [ isMapModeOn, setIsMapModeOn ] = React.useState<boolean>(false);
     const [ isRespectRadiusOff, setIsRespectRadiusOff ] = React.useState<boolean>(false);
     //get context
     const gpsCoordinates = React.useContext(GPSContext);
@@ -50,35 +52,42 @@ export default function Hotspots({ selectedCityId }:{selectedCityId:string}){
 
     return (
         <Container>
-            <Grid container spacing={2} >
-                {data.hotspotsByCity
-                    .filter((hotspot: hotspot) => { //is the user in the radius of this hotspot? 
-                        if (isRespectRadiusOff) return true;
-                        return (distanceBetweenCoordinates(gpsCoordinates?.coords.latitude, gpsCoordinates?.coords.longitude, hotspot.coordinates.lat, hotspot.coordinates.long) < hotspot.radius)
-                    }) 
-                    .map((hotspot:hotspot) => { //render JSX
-                        return (
-                            <Grid item 
-                                sm={12} md={4} lg={3}
-                                key={hotspot.id} 
-                                gap="2px" >
-                                <HotspotCard hotspot={ hotspot } setText = { playDescription } />
-                            </Grid>);
-                    })
-                }
-            </Grid>
             <Typography>Settings</Typography>
             <ButtonGroup>
-                <FormControlLabel 
-                    control={
-                        <Switch 
-                            checked={isRespectRadiusOff} 
-                            onChange={ () => setIsRespectRadiusOff(!isRespectRadiusOff) }/>} 
-                    label="Is Radius Respected" />
+                <Button onClick={ () => setIsMapModeOn(!isMapModeOn) }>
+                    { isMapModeOn ? 'List View' : 'Map View' }
+                </Button>
+                <Button onClick={ () => setIsRespectRadiusOff(!isRespectRadiusOff) }>
+                    { isRespectRadiusOff ? 'Show Local only' : 'Show all' }
+                </Button>
                 <Button onClick={ () => pauseDescription() }> Pause </Button>
                 <Button onClick={ () => resumeDescription() }> Resume </Button>
                 <Button onClick={ () => stopDescription() }> Stop </Button>
-                </ButtonGroup>
+            </ButtonGroup>
+            
+            {   isMapModeOn 
+                ?
+                <Map 
+                    hotspots={data.hotspotsByCity} 
+                    playDescription={playDescription} />
+                :
+                <Grid container spacing={2} >{
+                    data.hotspotsByCity
+                        .filter((hotspot: hotspot) => { //is the user in the radius of this hotspot? 
+                            if (isRespectRadiusOff) return true;
+                            return (distanceBetweenCoordinates(gpsCoordinates?.coords.latitude, gpsCoordinates?.coords.longitude, hotspot.coordinates.lat, hotspot.coordinates.long) < hotspot.radius)
+                        }) 
+                        .map((hotspot:hotspot) => { //render JSX
+                            return (
+                                <Grid item 
+                                    sm={12} md={4} lg={3}
+                                    key={hotspot.id} 
+                                    gap="2px" >
+                                    <HotspotCard hotspot={ hotspot } setText = { playDescription } />
+                                </Grid>);
+                        })
+                }</Grid>
+            }
         </Container>
     )
 }
