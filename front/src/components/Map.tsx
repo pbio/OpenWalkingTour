@@ -22,7 +22,7 @@ function Map({hotspots, playDescription}:{hotspots:any, playDescription:any}) {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyD4IgIfDosSgnwwlB_e2eCqTprRdBDLmbw"
+    googleMapsApiKey: "AIzaSyD_48urFk4u-WkwvL0GB726yr1iYImX8hI"
   })
 
   const [map, setMap] = React.useState(null)
@@ -43,14 +43,16 @@ function Map({hotspots, playDescription}:{hotspots:any, playDescription:any}) {
         center={center}
         zoom={15}
         onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        <>
+        onUnmount={onUnmount} >
+
+        { /* Add bike lanes layer */ }
         <BicyclingLayer />
+
         { /* Add marker at my current location */ }
         <Marker 
             position = { center } 
             title = 'My Location' />
+
         { /* Add markers at each hotspot */ }
         {hotspots.map((hotspot: any, hotspotIdx: number) => {
                 console.log(hotspot);
@@ -60,9 +62,10 @@ function Map({hotspots, playDescription}:{hotspots:any, playDescription:any}) {
                             position = {{ lat: hotspot.coordinates?.lat, lng: hotspot.coordinates?.long }} 
                             onClick = { () => { playDescription(hotspot.description) }} />
         })}
-        </>
       </GoogleMap>
-  ) : <></>
+    ) 
+    : 
+    <div>...Loading the map</div>
 }
 
 export default React.memo(Map)

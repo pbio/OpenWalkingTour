@@ -52,7 +52,6 @@ export default function Hotspots({ selectedCityId }:{selectedCityId:string}){
 
     return (
         <Container>
-            <Typography>Settings</Typography>
             <ButtonGroup>
                 <Button onClick={ () => setIsMapModeOn(!isMapModeOn) }>
                     { isMapModeOn ? 'List View' : 'Map View' }

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import AddHotspot from './components/AddHotspot';
-import CityList from './components/CityList';
-import ShowCurrentLocation from './components/ShowCurrentLocation';
+import AddHotspot from '../components/AddHotspot';
+import CityList from '../components/CityList';
+import ShowCurrentLocation from '../components/ShowCurrentLocation';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Hotspots from './components/Hotspots';
-import Map from './components/Map';
+import Hotspots from '../components/Hotspots';
+import Map from '../components/Map';
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
