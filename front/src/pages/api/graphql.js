@@ -6,7 +6,11 @@ import { gql } from 'graphql-tag';
 import City from '../../models/city.js';
 import Author from '../../models/author.js';
 import Hotspot from '../../models/hotspot.js';
-
+import dbConnect from '../../lib/dbConnect.js';
+dbConnect();
+mongoose.connection.once('open', () => {
+  console.log('connected to the DB'); 
+})
 const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.l9ehctp.mongodb.net/?retryWrites=true&w=majority`;
 
 const resolvers = {
