@@ -1,42 +1,67 @@
-//import { graphql, buildSchema } from "graphql";
+
 import { ApolloServer } from '@apollo/server';
-//import schema from './schema/schema.js';
-//const schema = require('./schema/schema.js');
-import { makeExecutableSchema } from 'graphql-tools'
-import dbConnect from '../../lib/dbConnect';
+import mongoose from 'mongoose';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { gql } from 'graphql-tag';
 import City from '../../models/city.js';
+import Author from '../../models/author.js';
+import Hotspot from '../../models/hotspot.js';
 
-dbConnect();
+const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.l9ehctp.mongodb.net/?retryWrites=true&w=majority`;
 
 const resolvers = {
   Query: {
-    hello: () => 'world',
-    cities: () => [{name:'marseille', id: 23, description: 'lalaland', size: 'medium'}, {name:'brooklyn', id: 13, description: 'other description', size: 'large'}],
-    //cities: () => City.find(),
-    authors: () => [{name: 'Juan', id: 1}, {name: 'Paul', id: 2},],
-    hotspotsByCity: () => [{name: 'longchamp', id: 10, authorId: 1, radius: 100, description: 'dsdfsf', cityId: 13, coordinates: {lat:100, long:200} }],
+    cities: async (parent, args, contextValue, info) => { 
+        const myCities = await City.find();
+        return myCities;
+    },
+    authors: async (parent, args, contextValue, info) => { 
+      const myAuthors = await Author.find();
+      return myAuthors;
+    },
+    hotspotsByCity: async (parent, args, contextValue, info) => { 
+      const myHotspots = await Hotspot.find({cityId: args.cityId});
+      return myHotspots;
+    }
+  },
+  Mutation: {
+    addHotspot: async (parent, args) => {
+      let hotspot = new Hotspot({
+          name: args.name,
+          description: args.description,
+          radius: args.radius,
+          coordinates: args.coordinates,
+          cityId: args.cityId,
+          authorId: args.authorId
+      });
+      const newHotspot = await hotspot.save();
+      return newHotspot;
+    }
   }
 };
 
 const typeDefs = gql`
   type City {
     name: String
-    id: Int
+    id: ID
     description: String
-    size: String
+    size: String,
+    country: String
   }
   type Author {
     name: String
-    id: Int
+    id: ID
   }
   type Location {
     lat: Float
     long: Float
   }
+  input LocationInput {
+    lat: Float
+    long: Float
+  }
   type Hotspot {
-    id: Int
+    id: ID
     name: String
     coordinates: Location
     city: City
@@ -50,19 +75,40 @@ const typeDefs = gql`
     authors: [Author]
     hotspotsByCity( cityId: ID! ): [Hotspot]
   }
+  type Mutation {
+    addHotspot( name: String,
+      description: String,
+      radius: Int,
+      coordinates: LocationInput,
+      cityId: ID,
+      authorId: ID ): Hotspot
+  }
 `;
 
-// export default async (req, res) => {
-//   console.log('going to connect to DB');
-  
-//   console.log('connection success')
-//   //console.log(schema)
-//   const query = req.body.query;
-//   const response = await graphql(schema2, query, root);
+let db
 
-//   return res.end(JSON.stringify(response));
-// };
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  introspection: true,
+  context: async () => {
+    if (!db) {
+      try {
 
-const server = new ApolloServer({ resolvers, typeDefs });
+        db = await mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+          console.log('this works');
+          return mongoose
+        })
+        mongoose.connection.once('open', () => {
+          console.log('connected to the DB'); 
+        })
+      } catch (e) {
+        console.log('--->error while connecting with graphql context (db)', e)
+      }
+    }
+
+    return { db: db }
+  },
+})
+
 export default startServerAndCreateNextHandler(server);
-

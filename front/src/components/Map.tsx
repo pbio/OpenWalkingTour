@@ -22,7 +22,7 @@ function Map({hotspots, playDescription}:{hotspots:any, playDescription:any}) {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyD_48urFk4u-WkwvL0GB726yr1iYImX8hI"
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GMAPS_KEY
   })
 
   const [map, setMap] = React.useState(null)
