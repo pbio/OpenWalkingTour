@@ -6,17 +6,24 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Hotspots from '../components/Hotspots';
 import Map from '../components/Map';
+import Test from '../components/Test';
+
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client: any = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'http://localhost:3000/api/graphql',
   cache: new InMemoryCache(),
 })
 
 export default function App() {
   const [selectedCityId, setSelectedCityId ] = React.useState<string>('');
-
+  const [name, setName ] = React.useState<string>();
+  React.useEffect(() => {
+    fetch('http://localhost:3000/api/user')
+                    .then(response => response.json())
+                    .then(response => setName(response.name));
+  }, []);
   return (
     <ApolloProvider client={client} >
       <Container id="main">
@@ -27,7 +34,8 @@ export default function App() {
           gutterBottom>
             Open Walking Tour
         </Typography>
-        <ShowCurrentLocation>        
+        <ShowCurrentLocation>
+          <Test />
           <AddHotspot />
           { selectedCityId 
             ? 
