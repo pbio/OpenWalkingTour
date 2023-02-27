@@ -20,9 +20,10 @@ function Map({hotspots, playDescription}:{hotspots:any, playDescription:any}) {
         lng: GPSCoordinates.coords.longitude
       };
 
+  if (!process.env.NEXT_PUBLIC_GMAPS_KEY) return <div>Issue with connection to maps API</div>
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GMAPS_KEY
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GMAPS_KEY 
   })
 
   const [map, setMap] = React.useState(null)
