@@ -16,10 +16,12 @@ const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}
 const resolvers = {
   Query: {
     cities: async (parent, args, contextValue, info) => { 
+        await setTimeout(()=>{console.log('connected 2')}, 1000); //need to find better solution to this...
         const myCities = await City.find();
         return myCities;
     },
     authors: async (parent, args, contextValue, info) => { 
+      await setTimeout(()=>{console.log('connected 1')}, 1000); //need to find better solution to this...
       const myAuthors = await Author.find();
       return myAuthors;
     },
