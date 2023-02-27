@@ -10,7 +10,7 @@ import Hotspots from '../components/Hotspots';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client: any = new ApolloClient({
-  uri: '/api/graphql',
+  uri: `${process.env.NEXT_PUBLIC_BASE_ENDPOINT}api/graphql`,
   cache: new InMemoryCache(),
 })
 
