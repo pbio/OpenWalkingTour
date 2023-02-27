@@ -96,20 +96,20 @@ const server = new ApolloServer({
   resolvers,
   introspection: true,
   context: async () => {
-    if (!db) {
-      try {
+    // if (!db) {
+    //   try {
 
-        db = await mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-          console.log('this works');
-          return mongoose
-        })
-        mongoose.connection.once('open', () => {
-          console.log('connected to the DB'); 
-        })
-      } catch (e) {
-        console.log('--->error while connecting with graphql context (db)', e)
-      }
-    }
+    //     db = await mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    //       console.log('this works');
+    //       return mongoose
+    //     })
+    //     mongoose.connection.once('open', () => {
+    //       console.log('connected to the DB'); 
+    //     })
+    //   } catch (e) {
+    //     console.log('--->error while connecting with graphql context (db)', e)
+    //   }
+    // }
 
     return { db: db }
   },
