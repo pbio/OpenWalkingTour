@@ -1,6 +1,8 @@
 # Open Walking Tour
 
 ## The idea behind the App
+History and culture accessible to anyone. 
+
 Walk around town and use this app as your Virtual Tour Guide. Anytime you walk near a hotspot the app will automatically play you a description of what your are seeing. 
 
 ## Try out 
