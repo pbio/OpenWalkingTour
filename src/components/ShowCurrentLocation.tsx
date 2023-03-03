@@ -32,7 +32,7 @@ export default function ShowCurrentLocation({ children }: {children: JSX.Element
                         ? 
                         <Typography variant='body1'>Your navigator does not allow GPS tracking</Typography>
                         :
-                        <Typography variant='body1'> {`My location: lat: ${usersCurrentLocation?.coords.latitude}, long: ${usersCurrentLocation?.coords.longitude}`} </Typography>
+                        <Typography variant='body1'> {`Lat: ${usersCurrentLocation?.coords.latitude}, Long: ${usersCurrentLocation?.coords.longitude}`} </Typography>
                     }
                     </div>
                 </GPSContext.Provider>

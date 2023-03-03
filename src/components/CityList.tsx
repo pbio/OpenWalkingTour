@@ -20,6 +20,13 @@ export default function CityList({setCityId}:{setCityId:any}){
     }
     return (
         <Container>
+        <Typography 
+          align='center'
+          variant={ 'h1' }
+          color='primary'
+          gutterBottom>
+            Open Walking Tour
+        </Typography>
             <Typography variant='h3' align='center'>Pick your city</Typography>
             <Grid container>
                 {data.cities.map((city:city) => {

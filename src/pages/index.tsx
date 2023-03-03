@@ -1,6 +1,34 @@
 import * as React from 'react';
+import AddHotspot from '../components/AddHotspot';
+import CityList from '../components/CityList';
+import ShowCurrentLocation from '../components/ShowCurrentLocation';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Hotspots from '../components/Hotspots';
 
-export default function testing(){
 
-    return <div>Go to /hotspots.tsx to see the application</div>
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+const client: any = new ApolloClient({
+  uri: `${process.env.NEXT_PUBLIC_BASE_ENDPOINT}api/graphql`,
+  cache: new InMemoryCache(),
+})
+
+export default function App() {
+  const [selectedCityId, setSelectedCityId ] = React.useState<string>('');
+  const [name, setName ] = React.useState<string>();
+  return (
+    <ApolloProvider client={client} >
+        <ShowCurrentLocation>
+          <AddHotspot />
+          { selectedCityId 
+            ? 
+            <Hotspots selectedCityId={ selectedCityId } /> 
+            : 
+            <CityList setCityId={ setSelectedCityId } />
+          }
+        </ShowCurrentLocation>
+
+    </ApolloProvider>
+  );
 }

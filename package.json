@@ -8,6 +8,7 @@
     "@as-integrations/next": "^1.2.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.7",
     "@react-google-maps/api": "^2.18.1",
     "@types/react": "latest",

@@ -64,7 +64,7 @@ export default function AddHotspot():JSX.Element {
                             Add Hotspot
                 </Button>
     return (
-        <Container style= {{ position: 'fixed', bottom: 0, right: '0', width: '400px', margin: '25px', backgroundColor: 'white', border:'1px lightgrey solid', borderRadius: '10px' }} >
+        <Container style= {{ position: 'fixed', bottom: 30, right: 0, width: 400, margin: 25, backgroundColor: 'white', border:'1px lightgrey solid', borderRadius: 10 }} >
             <Typography variant='h4' align='center' >
                 Add Hotspot
             </Typography>
