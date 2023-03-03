@@ -20,15 +20,14 @@ export default function App() {
   return (
     <ApolloProvider client={client} >
         <ShowCurrentLocation>
-          <AddHotspot />
           { selectedCityId 
             ? 
             <Hotspots selectedCityId={ selectedCityId } /> 
             : 
             <CityList setCityId={ setSelectedCityId } />
           }
+          <div></div>
         </ShowCurrentLocation>
-
     </ApolloProvider>
   );
 }

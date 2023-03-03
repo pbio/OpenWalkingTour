@@ -21,11 +21,15 @@ import PlayIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import MapIcon from "@mui/icons-material/Map";
 import ListIcon from "@mui/icons-material/List";
+import RadiusOnlyIcon from "@mui/icons-material/Adjust";
+import ShowAllIcon from "@mui/icons-material/HighlightOff";
+import AddHotspotIcon from "@mui/icons-material/AddLocation";
 import { Container } from "@mui/system";
 import { GET_HOTSPOTS_BY_CITY_QUERY } from "../queries/queries";
 import { useQuery } from "@apollo/client";
 import distanceBetweenCoordinates from "../lib/distanceBetweenCoordinates";
 import { GPSContext } from "./ShowCurrentLocation";
+import AddHotspot from "./AddHotspot";
 import Map from "./Map";
 
 interface hotspot {
@@ -44,9 +48,11 @@ export default function Hotspots({
 }) {
   //state
   //const [ text, setText ] = React.useState<string>('');
-  const [isMapModeOn, setIsMapModeOn] = React.useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
-  const [isRespectRadiusOff, setIsRespectRadiusOff] =
+  const [ isMapModeOn, setIsMapModeOn ] = React.useState<boolean>(false);
+  const [ isPlaying, setIsPlaying ] = React.useState<boolean>(false);
+  const [ isRespectRadiusOff, setIsRespectRadiusOff ] =
+    React.useState<boolean>(false);
+  const [ isAddHotspotModalOpen, setIsAddHotspotModalOpen ] =
     React.useState<boolean>(false);
   //get context
   const gpsCoordinates = React.useContext(GPSContext);
@@ -124,6 +130,24 @@ export default function Hotspots({
             onClick={() => setIsMapModeOn(!isMapModeOn)}>
             {isMapModeOn ? <ListIcon /> : <MapIcon />}
           </IconButton>
+          <IconButton
+            size='large'
+            edge='start'
+            color='inherit'
+            aria-label='menu'
+            sx={{ mr: 2 }}
+            onClick={() => setIsRespectRadiusOff(!isRespectRadiusOff)}>
+            {isRespectRadiusOff ? <ShowAllIcon /> : <RadiusOnlyIcon />}
+          </IconButton>
+          <IconButton
+            size='large'
+            edge='start'
+            color='inherit'
+            aria-label='menu'
+            sx={{ mr: 2 }}
+            onClick={() => setIsAddHotspotModalOpen(true)}>
+            { <AddHotspotIcon /> }
+          </IconButton>
 
           <Button color='inherit'></Button>
         </Toolbar>
@@ -159,7 +183,7 @@ export default function Hotspots({
         </Grid>
         </Container>
       )}
-    
+    {isAddHotspotModalOpen && <AddHotspot close={()=>{setIsAddHotspotModalOpen(false)}}/>}
     </Box>
   );
 }

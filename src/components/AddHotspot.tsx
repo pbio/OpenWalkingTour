@@ -14,7 +14,7 @@ import { ButtonGroup } from '@mui/material';
 
 
 
-export default function AddHotspot():JSX.Element {
+export default function AddHotspot({close}:{close : ()=>void}):JSX.Element {
     //Queries
     const [ mutateFunction, bookMutation ] = useMutation(ADD_HOTSPOT_MUTATION);
     const authorsQuery = useQuery(GET_AUTHORS_QUERY);
@@ -24,7 +24,6 @@ export default function AddHotspot():JSX.Element {
     const GPSCoordinates = React.useContext(GPSContext);
 
     //State
-    const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
     const [name, setName] = React.useState<string>('');
     const [authorId, setAuthorId] = React.useState<string>('');
     const [cityId, setCityId] = React.useState<string>('');
@@ -39,17 +38,13 @@ export default function AddHotspot():JSX.Element {
         setLong(GPSCoordinates?.coords.longitude);
     },[GPSCoordinates])
 
-    React.useEffect(()=>{
-        console.log(lat)
-    }, [lat])
-
 
 
 
     function submitForm(e:React.FormEvent<HTMLFormElement>):void {
         e.preventDefault();
         mutateFunction({ variables:{ name, authorId, radius, coordinates: { lat, long }, description, cityId }, refetchQueries: [{query: GET_HOTSPOTS_BY_CITY_QUERY, variables: { cityId }}] });
-        setIsModalOpen(false)
+        close();
         alert('successfully added your hotspot');
     }
     
@@ -57,12 +52,6 @@ export default function AddHotspot():JSX.Element {
         padding: '10px',
         fontStyle: 'courrier new',
     }
-    if (!isModalOpen) 
-        return <Button 
-                        style={{position: 'fixed', bottom: '10px', right: '10px' }} 
-                        onClick={()=>{setIsModalOpen(true)}}>
-                            Add Hotspot
-                </Button>
     return (
         <Container style= {{ position: 'fixed', bottom: 30, right: 0, width: 400, margin: 25, backgroundColor: 'white', border:'1px lightgrey solid', borderRadius: 10 }} >
             <Typography variant='h4' align='center' >
@@ -147,7 +136,7 @@ export default function AddHotspot():JSX.Element {
                 <Button variant='contained' type="submit" form="add-hotspot" value="Submit" > 
                     Add New Hotspot
                 </Button>
-                <Button onClick={ () => setIsModalOpen(false) }>
+                <Button onClick={ () => close() }>
                     cancel
                 </Button>
             </ButtonGroup>
