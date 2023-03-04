@@ -1,16 +1,12 @@
 import * as React from 'react';
 import {    useQuery, 
             useMutation } from '@apollo/client';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
+import { Button, Grid, Typography, TextField, ButtonGroup } from '@mui/material';
 import {    GET_AUTHORS_QUERY, 
             ADD_HOTSPOT_MUTATION,
             GET_HOTSPOTS_BY_CITY_QUERY,
             GET_CITIES_QUERY } from '../queries/queries';
 import { GPSContext } from './ShowCurrentLocation';
-import { ButtonGroup } from '@mui/material';
 
 
 
@@ -53,7 +49,8 @@ export default function AddHotspot({close}:{close : ()=>void}):JSX.Element {
         fontStyle: 'courrier new',
     }
     return (
-        <Container style= {{ position: 'fixed', bottom: 30, right: 0, width: 400, margin: 25, backgroundColor: 'white', border:'1px lightgrey solid', borderRadius: 10 }} >
+    <Grid container justifyContent= "flex-end">
+        <Grid item xs={12} sm={12} md={6} lg={3} style= {{ width: '100%', position: 'fixed', bottom: 0, backgroundColor: 'white', border:'1px lightgrey solid', borderRadius: 10, zIndex:10 }} >
             <Typography variant='h4' align='center' >
                 Add Hotspot
             </Typography>
@@ -141,7 +138,8 @@ export default function AddHotspot({close}:{close : ()=>void}):JSX.Element {
                 </Button>
             </ButtonGroup>
         </form>
-        </Container>
+        </Grid>
+    </Grid>
     )
 
 }
