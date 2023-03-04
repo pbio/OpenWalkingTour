@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 
 export const GPSContext = React.createContext<any>(null); //create context outside to access from anywhere
 
-export default function ShowCurrentLocation({ children }: {children: JSX.Element[]}){
+export default function ShowCurrentLocation({ children }: {children: JSX.Element[] | JSX.Element }){
     const [ usersCurrentLocation, setUsersCurrentLocation ] = React.useState<{coords:{latitude: number, longitude: number}}>();
     const [ isErrorWithGPS, setIsErrorWithGPS ] = React.useState<boolean>(false);
     const [ GPSError, setGPSError ] = React.useState<any>();
