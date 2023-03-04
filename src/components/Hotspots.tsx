@@ -90,8 +90,8 @@ export default function Hotspots({
   }
 
   return (
-    <Box sx={{width:1, height: 1}}>
-    <AppBar position='static'>
+    <Box sx={{overflowX: 'hidden'}}>
+    <AppBar position='fixed'  elevation={0}>
         <Toolbar>
             <Typography variant='h6' component='div' sx={{ display: {xs: 'none', md: 'block'}, marginRight: '60px' }}>
             Open walking Tour
@@ -157,7 +157,7 @@ export default function Hotspots({
       {isMapModeOn ? (
         <Map hotspots={data.hotspotsByCity} playDescription={playDescription} />
       ) : (
-        <Container>
+        <Box sx={{position: 'absolute', top: 56}}>
         <Grid container spacing={2}>
           {data.hotspotsByCity
             .filter((hotspot: hotspot) => {
@@ -181,7 +181,7 @@ export default function Hotspots({
               );
             })}
         </Grid>
-        </Container>
+        </Box>
       )}
     {isAddHotspotModalOpen && <AddHotspot close={()=>{setIsAddHotspotModalOpen(false)}}/>}
     </Box>

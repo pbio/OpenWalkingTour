@@ -26,7 +26,6 @@ export default function App() {
             : 
             <CityList setCityId={ setSelectedCityId } />
           }
-          <div></div>
         </ShowCurrentLocation>
     </ApolloProvider>
   );
