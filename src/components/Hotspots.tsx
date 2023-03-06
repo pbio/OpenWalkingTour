@@ -57,7 +57,7 @@ export default function Hotspots({
   //get context
   const gpsCoordinates = React.useContext(GPSContext);
   const { data, loading, error } = useQuery(GET_HOTSPOTS_BY_CITY_QUERY, {
-    variables: { cityId: "63daa3c0086bf959ab6bb789" },
+    variables: { cityId: selectedCityId },
   });
 
   if (loading) return <div>loading</div>;
