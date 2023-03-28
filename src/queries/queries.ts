@@ -17,22 +17,7 @@ export const GET_CITIES_QUERY = gql`
     }
 }`
 
-export const GET_BOOKS_QUERY = gql`
-{
-    books {
-        name
-        id
-    }
-}`
 
-export const ADD_BOOK_MUTATION = gql`
-mutation AddBook( $authorId: ID!, $name: String!, $genre: String! ){
-    addBook( authorId: $authorId, name: $name, genre: $genre ){
-        name
-        genre
-    }
-}
-`;
 
 export const ADD_HOTSPOT_MUTATION = gql`
 mutation AddHotspot( $authorId: ID!, $cityId: ID!, $name: String!, $description: String, $radius: Int!, $coordinates: LocationInput){
@@ -51,19 +36,6 @@ mutation AddHotspot( $authorId: ID!, $cityId: ID!, $name: String!, $description:
 }    
 `
 
-
-export const GET_BOOK_QUERY = gql`
-query GetBook( $id: ID! ){
-    book( id: $id ){
-        name
-        genre
-        author{
-            name
-            age
-        }
-    }
-}
-`;
 
 export const GET_HOTSPOTS_BY_CITY_QUERY = gql`
 query GetHotspotsByCity( $cityId: ID! ){
